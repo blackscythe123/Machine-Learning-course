@@ -1,0 +1,6 @@
+﻿Dataset,Type of ML Task,Feature Selection Technique,Suitable ML Algorithm
+Iris Dataset,Classification,ANOVA, SelectKBest,Logistic Regression, SVM, Decision Tree
+Loan Amount Prediction,Regression,Correlation, SelectKBest,Linear Regression, Random Forest Regressor
+Predicting Diabetes,Classification,Chi-square test, SelectKBest,Logistic Regression, SVM, Random Forest
+Classification of Email Spam,Classification,Chi-square test, Mutual Information,Naive Bayes, SVM, Random Forest
+Handwritten Character Recognition (MNIST),Classification,PCA, SelectKBest,CNN, SVM, K-Nearest Neighbors
