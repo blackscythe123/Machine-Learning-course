@@ -1,0 +1,31 @@
+Cleaned dataset shape: (592, 12)
+Features used (11): ['Dependents', 'ApplicantIncome', 'CoapplicantIncome', 'Loan_Amount_Term', 'Credit_History', 'Gender_Male', 'Married_Yes', 'Education_Not Graduate', 'Self_Employed_Yes', 'Property_Area_Semiurban', 'Property_Area_Urban']
+
+Ridge best alpha: {'alpha': 100}  CV R2: 0.3714
+Lasso best alpha: {'alpha': 10}  CV R2: 0.3311
+ElasticNet best params: {'alpha': 1, 'l1_ratio': 0.8}  CV R2: 0.3710
+
+=== Test Set Performance ===
+Linear Regression: {'MAE': 36.524206087309075, 'MSE': 3352.4323620883924, 'RMSE': np.float64(57.90019310924958), 'R2': 0.09058946088480024}  train_time=0.0020s
+Ridge Regression: {'MAE': 37.37217074925158, 'MSE': 3175.9466914753693, 'RMSE': np.float64(56.35553825024981), 'R2': 0.13846452934951203}  train_time=0.0354s
+Lasso Regression: {'MAE': 37.79592142165356, 'MSE': 3176.7999686387425, 'RMSE': np.float64(56.36310822371973), 'R2': 0.13823306181747963}  train_time=0.0377s
+Elastic Net Regression: {'MAE': 37.32317882630821, 'MSE': 3163.588511442921, 'RMSE': np.float64(56.24578661058018), 'R2': 0.14181691888401415}  train_time=0.0896s
+
+=== 5-Fold CV Performance (mean) ===
+Linear Regression: {'MAE': np.float64(43.060934602042586), 'MSE': np.float64(5506.902624438633), 'RMSE': np.float64(74.20850776318463), 'R2': np.float64(0.3109981525273783)}
+Ridge Regression: {'MAE': np.float64(44.0681887117626), 'MSE': np.float64(4932.953166502285), 'RMSE': np.float64(70.23498534564014), 'R2': np.float64(0.37138336104377145)}
+Lasso Regression: {'MAE': np.float64(46.23062182708854), 'MSE': np.float64(5281.512734151794), 'RMSE': np.float64(72.67401691217978), 'R2': np.float64(0.33108022245796487)}
+Elastic Net Regression: {'MAE': np.float64(43.848165596615964), 'MSE': np.float64(4939.54633817035), 'RMSE': np.float64(70.28190619334646), 'R2': np.float64(0.3709564807529403)}
+
+Best model by test RMSE: Elastic Net Regression
+
+Coefficient table (top 8 features):
+                           Linear      Ridge      Lasso  ElasticNet
+ApplicantIncome         54.028107  43.879868  44.979158   43.755931
+CoapplicantIncome       22.301515  17.217784  11.788210   16.761366
+Married_Yes              9.431656   7.869268   1.744621    7.508502
+Loan_Amount_Term         7.706688   5.640389   0.000000    4.980223
+Self_Employed_Yes        6.457342   6.176986   0.000000    5.662566
+Education_Not Graduate  -6.382882  -6.809741  -0.000000   -6.231194
+Property_Area_Urban     -5.471933  -4.118205  -0.000000   -3.011689
+Dependents               4.983156   5.716058   0.000000    5.275320

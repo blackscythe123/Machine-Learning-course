@@ -1,0 +1,6 @@
+Dataset,Task,FeatureSelection,Algorithm
+Iris Dataset,Supervised - Multi-class Classification,ANOVA F-test / SelectKBest (all 4 features informative),"Logistic Regression / KNN / SVM (small, linearly-separable-ish, 3 classes)"
+Loan Amount Prediction,Supervised - Regression (continuous LoanAmount target),"Correlation analysis + domain-driven selection (income, credit history)",Linear / Ridge / Lasso / Elastic Net Regression
+Predicting Diabetes,Supervised - Binary Classification,"ANOVA F-test (top: Glucose, BMI, Age, Pregnancies)",Logistic Regression / Random Forest / SVM
+Classification of Email Spam,Supervised - Binary Classification,Correlation with label + variance threshold (57 numeric features),Naive Bayes / KNN / Logistic Regression / SVM
+Handwritten Character Recognition / MNIST,Supervised - Multi-class Classification (10 classes),PCA (dimensionality reduction on 64 pixel features),CNN / SVM (RBF kernel) / Random Forest / k-NN
