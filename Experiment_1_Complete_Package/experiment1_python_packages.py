@@ -24,6 +24,121 @@ from sklearn.model_selection import train_test_split
 sns.set_style("whitegrid")
 
 # =====================================================================
+# COURSE-WIDE PLOT FORMATTING RULES (Times New Roman 15pt, bold axis labels)
+# =====================================================================
+plt.rcParams['font.family'] = 'serif'
+plt.rcParams['font.serif'] = ['Times New Roman']
+plt.rcParams['font.size'] = 15
+plt.rcParams['legend.fontsize'] = 15
+plt.rcParams['legend.title_fontsize'] = 15
+plt.rcParams['axes.labelweight'] = 'bold'
+
+
+# =====================================================================
+# REUSABLE FUNCTION: consolidated 12-subplot EDA summary figure
+# =====================================================================
+def build_eda_summary_figure(iris_df, loan_df, pima_df, spam_df, digits):
+    """
+    Build a single consolidated EDA figure containing 12 subplots (3x4 grid)
+    distributed across the five datasets surveyed in this experiment:
+
+      1.  Iris        - sepal length vs petal length scatter, colored by species
+      2.  Iris        - petal width by species boxplot
+      3.  Loan         - LoanAmount histogram
+      4.  Loan         - ApplicantIncome vs LoanAmount scatter
+      5.  Diabetes     - Glucose by Outcome boxplot
+      6.  Diabetes     - BMI histogram
+      7.  Spambase     - class (is_spam) countplot
+      8.  Spambase     - correlation heatmap of a handful of top features
+      9.  Digits       - sample digit image montage
+      10. Digits       - class count bar chart
+      11. Iris         - feature correlation heatmap (second Iris view)
+      12. Diabetes     - Age vs Glucose scatter colored by Outcome (second Diabetes view)
+
+    Returns the created matplotlib Figure.
+    """
+    fig, axes = plt.subplots(3, 4, figsize=(20, 15))
+    ax = axes.ravel()
+
+    # 1. Iris: sepal length vs petal length scatter, colored by species
+    sns.scatterplot(data=iris_df, x="sepal length (cm)", y="petal length (cm)",
+                     hue="target", palette="deep", ax=ax[0], legend="brief")
+    ax[0].set_title("Iris: Sepal Length vs Petal Length")
+    ax[0].legend(title="Species", fontsize=15, title_fontsize=15)
+
+    # 2. Iris: petal width by species boxplot
+    sns.boxplot(data=iris_df, x="target", y="petal width (cm)", ax=ax[1])
+    ax[1].set_title("Iris: Petal Width by Species")
+    ax[1].set_xlabel("Species (encoded)")
+
+    # 3. Loan: LoanAmount histogram
+    sns.histplot(loan_df["LoanAmount"].dropna(), bins=25, kde=True, ax=ax[2])
+    ax[2].set_title("Loan: LoanAmount Distribution")
+    ax[2].set_xlabel("Loan Amount (thousands)")
+
+    # 4. Loan: ApplicantIncome vs LoanAmount scatter
+    loan_valid = loan_df.dropna(subset=["ApplicantIncome", "LoanAmount"])
+    sns.scatterplot(data=loan_valid, x="ApplicantIncome", y="LoanAmount", ax=ax[3])
+    ax[3].set_title("Loan: Income vs Loan Amount")
+
+    # 5. Diabetes: Glucose by Outcome boxplot
+    sns.boxplot(x="Outcome", y="Glucose", data=pima_df, ax=ax[4])
+    ax[4].set_title("Diabetes: Glucose by Outcome")
+
+    # 6. Diabetes: BMI histogram
+    sns.histplot(pima_df["BMI"].dropna(), bins=25, kde=True, ax=ax[5])
+    ax[5].set_title("Diabetes: BMI Distribution")
+    ax[5].set_xlabel("BMI")
+
+    # 7. Spambase: class countplot
+    sns.countplot(x="is_spam", data=spam_df, ax=ax[6])
+    ax[6].set_title("Spambase: Class Distribution")
+    ax[6].set_xlabel("Is Spam")
+
+    # 8. Spambase: correlation heatmap of a handful of top features
+    spam_top_cols = ["word_freq_free", "word_freq_money", "word_freq_business",
+                      "char_freq_$", "capital_run_length_average", "is_spam"]
+    spam_corr = spam_df[spam_top_cols].corr()
+    sns.heatmap(spam_corr, annot=True, fmt=".2f", cmap="coolwarm", ax=ax[7],
+                cbar=True, annot_kws={"size": 10})
+    ax[7].set_title("Spambase: Feature Correlation")
+
+    # 9. Digits: sample digit image montage (single composite image)
+    n_rows, n_cols = 2, 5
+    n_samples = n_rows * n_cols
+    img_h, img_w = digits.images.shape[1], digits.images.shape[2]
+    montage = np.zeros((img_h * n_rows, img_w * n_cols))
+    for i in range(n_samples):
+        r, c = divmod(i, n_cols)
+        montage[r*img_h:(r+1)*img_h, c*img_w:(c+1)*img_w] = digits.images[i]
+    ax[8].imshow(montage, cmap="gray")
+    ax[8].set_title("Digits: Sample Image Montage")
+    ax[8].set_xticks([]); ax[8].set_yticks([])
+
+    # 10. Digits: class count bar chart
+    sns.countplot(x=digits.target, ax=ax[9])
+    ax[9].set_title("Digits: Class Distribution")
+    ax[9].set_xlabel("Digit Class")
+
+    # 11. Iris: feature correlation heatmap (second Iris view)
+    iris_corr = iris_df.drop(columns=["target"]).corr()
+    sns.heatmap(iris_corr, annot=True, fmt=".2f", cmap="coolwarm", ax=ax[10],
+                cbar=True, annot_kws={"size": 10})
+    ax[10].set_title("Iris: Feature Correlation")
+
+    # 12. Diabetes: Age vs Glucose scatter colored by Outcome (second Diabetes view)
+    sns.scatterplot(data=pima_df, x="Age", y="Glucose", hue="Outcome",
+                     palette="deep", ax=ax[11], legend="brief")
+    ax[11].set_title("Diabetes: Age vs Glucose")
+    ax[11].legend(title="Outcome", fontsize=15, title_fontsize=15)
+
+    fig.suptitle("Experiment 1: Consolidated EDA Summary Across 5 Datasets",
+                 fontsize=15, fontweight="bold")
+    fig.tight_layout(rect=[0, 0, 1, 0.97])
+    return fig
+
+
+# =====================================================================
 # PART A: LIBRARY FUNCTION EXPLORATION
 # =====================================================================
 print("="*70)
@@ -160,5 +275,18 @@ print("\n" + "="*70)
 print("SUMMARY TABLE: Dataset -> ML Task -> Feature Selection -> Suitable Algorithm")
 print("="*70)
 print(summary_df.to_string(index=False))
+
+# =====================================================================
+# CONSOLIDATED EDA SUMMARY FIGURE (12 subplots, 1 page, all 5 datasets)
+# =====================================================================
+print("\n" + "="*70)
+print("Building consolidated 12-subplot EDA summary figure")
+print("="*70)
+eda_fig = build_eda_summary_figure(iris_df, loan_df, pima_df, spam_df, digits)
+eda_fig.savefig("figures/00_eda_summary.eps", format="eps", dpi=600)
+eda_fig.savefig("figures/00_eda_summary.png", format="png", dpi=150)
+plt.close(eda_fig)
+print("Saved consolidated EDA summary to figures/00_eda_summary.eps (600 DPI) "
+      "and figures/00_eda_summary.png (150 DPI)")
 
 print("\nDone. Figures saved to figures/, summary table saved to dataset_task_summary.csv")

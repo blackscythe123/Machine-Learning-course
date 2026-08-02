@@ -75,64 +75,46 @@ Spambase & 4601 emails & 57 numeric, 0 missing & 2 classes (spam / ham) \\ \hlin
 \end{longtable}
 
 \section{Exploratory Data Analysis}
-
-\subsection*{Iris Dataset}
+Since this experiment surveys five different datasets rather than modelling one, the
+required 12-subplot summary is spread across all five instead of drilling into a single
+dataset:
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.55\linewidth]{figures/01_iris_scatter.png}
-\caption{Iris: sepal length vs.\ petal length, coloured by species (150 samples, 4
-features, 3 classes).}
+\includegraphics[width=\linewidth]{figures/00_eda_summary.png}
+\caption{Consolidated exploratory data analysis (12 subplots, single page) across all
+five reference datasets: (1) Iris sepal length vs.\ petal length by species; (2) Iris
+petal width by species (boxplot); (3) Loan Amount histogram; (4) Loan applicant income
+vs.\ loan amount; (5) Diabetes Glucose by Outcome (boxplot); (6) Diabetes BMI histogram;
+(7) Spambase class distribution; (8) Spambase correlation heatmap (top features); (9)
+\texttt{digits} sample image montage; (10) \texttt{digits} class counts; (11) Iris
+feature correlation heatmap; (12) Diabetes Age vs.\ Glucose by Outcome. Exported at 600
+DPI as \texttt{figures/00\_eda\_summary.eps} and reproduced here as PNG.}
 \end{figure}
-\textbf{Inference:} \textit{Setosa} is linearly separable from the other two species on
-this feature pair alone; \textit{versicolor} and \textit{virginica} overlap slightly,
-which is why simple linear classifiers already achieve high accuracy on Iris but a
-non-linear boundary helps at the versicolor/virginica margin.
 
-\subsection*{Loan Amount Prediction}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.55\linewidth]{figures/02_loan_hist.png}
-\caption{Distribution of \texttt{LoanAmount} (614 applications, 149 missing values
-across all columns).}
-\end{figure}
-\textbf{Inference:} The right-skewed target and the mix of 5 numeric + 5 categorical
-features (with real missing values) make this a regression task requiring both
-imputation and categorical encoding, which is exactly the pipeline built in Experiment 3.
+\textbf{Inference (subplots 1, 2, 11 -- Iris):} \textit{Setosa} is linearly separable
+from the other two species on the sepal/petal length pair alone; \textit{versicolor} and
+\textit{virginica} overlap slightly, which is why simple linear classifiers already
+achieve high accuracy on Iris but a non-linear boundary helps at the
+versicolor/virginica margin.
 
-\subsection*{Predicting Diabetes}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.55\linewidth]{figures/03_diabetes_box.png}
-\caption{Glucose level by diabetes outcome (Pima Indians Diabetes dataset, 768 samples,
-class balance 500 negative / 268 positive).}
-\end{figure}
-\textbf{Inference:} Glucose level shows a clear separation between the two outcome
-classes (higher median and higher spread for the diabetic group), making it, along with
-BMI and Age, one of the strongest univariate predictors identified by the ANOVA F-test.
+\textbf{Inference (subplots 3, 4 -- Loan Amount Prediction):} The right-skewed target and
+the mix of 5 numeric + 5 categorical features (with real missing values) make this a
+regression task requiring both imputation and categorical encoding, which is exactly the
+pipeline built in Experiment 3.
 
-\subsection*{Classification of Email Spam}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.5\linewidth]{figures/04_spam_countplot.png}
-\caption{Spambase class distribution (4601 emails, 57 numeric features, 0 missing
-values).}
-\end{figure}
-\textbf{Inference:} This is a moderately imbalanced binary classification task on
-purely numeric, non-negative frequency features (the same dataset used and analyzed in
-depth in Experiments 2 and 4).
+\textbf{Inference (subplots 5, 6, 12 -- Predicting Diabetes):} Glucose level shows a
+clear separation between the two outcome classes (higher median and higher spread for
+the diabetic group), making it, along with BMI and Age, one of the strongest univariate
+predictors identified by the ANOVA F-test.
 
-\subsection*{Handwritten Character Recognition / MNIST}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.75\linewidth]{figures/05_digits_samples.png}
-\caption{Sample handwritten digit images (8$\times$8 pixel \texttt{digits} dataset, 1797
-samples, 10 classes, used here as a lightweight, fully offline stand-in for the larger
-28$\times$28 MNIST benchmark, since both pose the identical multi-class image
-classification task).}
-\end{figure}
-\textbf{Inference:} Each image is a 64-dimensional pixel-intensity vector; the high
-dimensionality relative to sample count is the classic motivation for PCA-based
-dimensionality reduction before applying distance-based classifiers such as k-NN or SVM.
+\textbf{Inference (subplots 7, 8 -- Classification of Email Spam):} This is a moderately
+imbalanced binary classification task on purely numeric, non-negative frequency features
+(the same dataset used and analyzed in depth in Experiments 2 and 4).
+
+\textbf{Inference (subplots 9, 10 -- Handwritten Character Recognition / MNIST):} Each
+image is a 64-dimensional pixel-intensity vector; the high dimensionality relative to
+sample count is the classic motivation for PCA-based dimensionality reduction before
+applying distance-based classifiers such as k-NN or SVM.
 
 \section{Data Preprocessing}
 Preprocessing needs identified per dataset (implemented in full in the experiments that

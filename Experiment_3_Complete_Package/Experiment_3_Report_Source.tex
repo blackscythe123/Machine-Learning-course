@@ -72,29 +72,42 @@ Train-Test Split & 80\% train (473 samples) / 20\% test (119 samples) \\ \hline
 \end{longtable}
 
 \section{Exploratory Data Analysis}
-
-\subsection*{Target Variable Distribution}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.6\linewidth]{figures/01_target_distribution.png}
-\caption{Distribution of the sanctioned loan amount.}
+\includegraphics[width=\linewidth]{figures/00_eda_summary.png}
+\caption{Consolidated exploratory data analysis (12 subplots, single page), on the raw,
+target-null-dropped, pre-encoding data: (1) \texttt{LoanAmount} target distribution; (2)
+missing-value counts by column; (3--4) ApplicantIncome and CoapplicantIncome vs.\ loan
+amount scatters; (5--10) count plots of \texttt{Credit\_History}, \texttt{Property\_Area},
+\texttt{Education}, \texttt{Self\_Employed}, \texttt{Married} and \texttt{Dependents};
+(11) \texttt{LoanAmount} boxplot by \texttt{Education}; (12) correlation heatmap of the
+numeric features. Exported at 600 DPI as \texttt{figures/00\_eda\_summary.eps} and
+reproduced here as PNG.}
 \end{figure}
-\textbf{Inference:} \texttt{LoanAmount} is strongly right-skewed, with most applicants
-sanctioned amounts in the 100--150 (thousand) range and a long tail of a few large loans.
-This skew is one reason plain linear models struggle to fit the tail well and partly
-explains the relatively modest $R^2$ obtained below.
 
-\subsection*{Feature vs. Target Scatter Plots}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.95\linewidth]{figures/02_feature_vs_target.png}
-\caption{Applicant income and co-applicant income vs.\ loan amount.}
-\end{figure}
-\textbf{Inference:} Applicant income shows a weak positive trend with loan amount, with
-substantial scatter, particularly a handful of high-income outliers that pull the linear
-fit without necessarily corresponding to proportionally larger loans. This weak, noisy
-relationship anticipates the limited predictive power ($R^2 \approx 0.1$--$0.4$)
-observed for every model.
+\textbf{Inference (subplot 1, target distribution):} \texttt{LoanAmount} is strongly
+right-skewed, with most applicants sanctioned amounts in the 100--150 (thousand) range
+and a long tail of a few large loans. This skew is one reason plain linear models
+struggle to fit the tail well and partly explains the relatively modest $R^2$ obtained
+below.
+
+\textbf{Inference (subplots 3--4, income scatters):} Applicant income shows a weak
+positive trend with loan amount, with substantial scatter, particularly a handful of
+high-income outliers that pull the linear fit without necessarily corresponding to
+proportionally larger loans. This weak, noisy relationship anticipates the limited
+predictive power ($R^2 \approx 0.1$--$0.4$) observed for every model.
+
+\textbf{Inference (subplot 2, missing values):} \texttt{Credit\_History} has by far the
+most missing values (50), followed by \texttt{Self\_Employed} (32), \texttt{Loan\_Amount\_Term}
+(14), \texttt{Gender} (13), \texttt{Dependents} (13) and \texttt{Married} (2), motivating
+the mode/median imputation strategy in the next section.
+
+\textbf{Inference (subplots 5--10, categorical counts, and subplot 12, correlation):} The
+categorical features are each dominated by one level (e.g.\ most applicants have
+\texttt{Credit\_History}=1, are male and married), which is why one-hot encoding with
+\texttt{drop\_first=True} keeps the encoded feature count manageable (11 features from 10
+raw). The correlation heatmap confirms ApplicantIncome and CoapplicantIncome are the only
+numeric features with a non-trivial linear relationship to \texttt{LoanAmount}.
 
 \section{Data Preprocessing}
 \begin{itemize}
@@ -276,7 +289,7 @@ looks like overfitting, but the gap here is better explained by the small datase
 (592 samples total, only 119 in the held-out test set): with so few test points, the
 $R^2$ estimate itself has high variance, and a handful of large, hard-to-predict loan
 amounts landing in the test split can noticeably drag test $R^2$ down independent of
-model quality. The learning curve (Figure 5) supports this reading: training and
+model quality. The learning curve (Figure 4) supports this reading: training and
 validation RMSE are close together and both plateau, which is the signature of
 \textbf{high bias / underfitting}, not high variance / overfitting. Regularization
 strength reflects this: the best-performing models (Ridge and Elastic Net) both selected

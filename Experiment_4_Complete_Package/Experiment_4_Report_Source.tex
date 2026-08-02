@@ -77,51 +77,39 @@ the class label \\ \hline
 \end{longtable}
 
 \section{Exploratory Data Analysis}
-
-\subsection*{Figure: Class Distribution}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.55\linewidth]{figures/01_class_distribution.png}
-\caption{Class distribution of the Spambase dataset.}
+\includegraphics[width=\linewidth]{figures/00_eda_summary.png}
+\caption{Consolidated exploratory data analysis (12 subplots, single page): (1) class
+distribution; (2--7) distributions of the six most class-correlated features
+(\texttt{word\_freq\_your/you/free}, \texttt{char\_freq\_\$/!},
+\texttt{capital\_run\_length\_average}), clipped at the 95th percentile; (8) correlation
+heatmap of the ten most class-correlated features; (9--11) class-split boxplots of the
+three most correlated features; (12) scatter of the two most correlated features,
+coloured by class. Exported at 600 DPI as \texttt{figures/00\_eda\_summary.eps} and
+reproduced here as PNG.}
 \end{figure}
-\textbf{Inference:} The dataset shows a moderate class imbalance (60.6\% ham, 39.4\%
-spam). Stratified splitting was used throughout so both the linear and kernel models see
-the same class proportions in every train/test partition and cross-validation fold.
 
-\subsection*{Figure: Correlation Heatmap}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\linewidth]{figures/02_correlation_heatmap.png}
-\caption{Correlation of the six capital-run-length / char-frequency features with each
-other and with the class label.}
-\end{figure}
-\textbf{Inference:} \texttt{char\_freq\_\$} and \texttt{char\_freq\_!} correlate most
-strongly with the spam label among this feature subset, echoing the pattern already seen
-in Experiment 2: punctuation associated with urgency or monetary offers is a strong spam
-signal. No pair reaches problematic multicollinearity, so all 57 features were retained
-for both models.
+\textbf{Inference (subplot 1, class distribution):} The dataset shows a moderate class
+imbalance (60.6\% ham, 39.4\% spam). Stratified splitting was used throughout so both the
+linear and kernel models see the same class proportions in every train/test partition and
+cross-validation fold.
 
-\subsection*{Figure: Feature Distributions}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.95\linewidth]{figures/03_histograms.png}
-\caption{Distribution of the six most correlated features.}
-\end{figure}
-\textbf{Inference:} All six features are strongly right-skewed with a long tail, which is
-why standardization (not just mean-centering) was applied before fitting Logistic
-Regression and SVM; both are sensitive to feature scale, unlike the tree-free Na\"ive
-Bayes models used in Experiment 2.
+\textbf{Inference (subplot 8, correlation heatmap):} \texttt{char\_freq\_\$} and
+\texttt{char\_freq\_!} correlate most strongly with the spam label among this feature
+subset, echoing the pattern already seen in Experiment 2: punctuation associated with
+urgency or monetary offers is a strong spam signal. No pair reaches problematic
+multicollinearity, so all 57 features were retained for both models.
 
-\subsection*{Figure: Boxplots by Class}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.95\linewidth]{figures/04_boxplots.png}
-\caption{Boxplots of the three most correlated features, split by class.}
-\end{figure}
-\textbf{Inference:} Spam emails have visibly higher medians and wider interquartile
-ranges for these features, confirming that a linear decision boundary on standardized
-features already has strong discriminative signal to work with, consistent with the
-high accuracy achieved by plain Logistic Regression below.
+\textbf{Inference (subplots 2--7, feature distributions):} All six features are strongly
+right-skewed with a long tail, which is why standardization (not just mean-centering) was
+applied before fitting Logistic Regression and SVM; both are sensitive to feature scale,
+unlike the tree-free Na\"ive Bayes models used in Experiment 2.
+
+\textbf{Inference (subplots 9--11, boxplots):} Spam emails have visibly higher medians
+and wider interquartile ranges for these features, confirming that a linear decision
+boundary on standardized features already has strong discriminative signal to work with,
+consistent with the high accuracy achieved by plain Logistic Regression below.
 
 \section{Data Preprocessing}
 \begin{itemize}

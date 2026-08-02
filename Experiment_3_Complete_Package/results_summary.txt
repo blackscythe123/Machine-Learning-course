@@ -6,16 +6,16 @@ Lasso best alpha: {'alpha': 10}  CV R2: 0.3311
 ElasticNet best params: {'alpha': 1, 'l1_ratio': 0.8}  CV R2: 0.3710
 
 === Test Set Performance ===
-Linear Regression: {'MAE': 36.524206087309075, 'MSE': 3352.4323620883924, 'RMSE': np.float64(57.90019310924958), 'R2': 0.09058946088480024}  train_time=0.0020s
-Ridge Regression: {'MAE': 37.37217074925158, 'MSE': 3175.9466914753693, 'RMSE': np.float64(56.35553825024981), 'R2': 0.13846452934951203}  train_time=0.0354s
-Lasso Regression: {'MAE': 37.79592142165356, 'MSE': 3176.7999686387425, 'RMSE': np.float64(56.36310822371973), 'R2': 0.13823306181747963}  train_time=0.0377s
-Elastic Net Regression: {'MAE': 37.32317882630821, 'MSE': 3163.588511442921, 'RMSE': np.float64(56.24578661058018), 'R2': 0.14181691888401415}  train_time=0.0896s
+Linear Regression: {'MAE': 36.52420608730909, 'MSE': 3352.432362088393, 'RMSE': np.float64(57.900193109249585), 'R2': 0.09058946088480013}  train_time=0.0057s
+Ridge Regression: {'MAE': 37.37217074925158, 'MSE': 3175.9466914753684, 'RMSE': np.float64(56.3555382502498), 'R2': 0.13846452934951226}  train_time=0.0239s
+Lasso Regression: {'MAE': 37.79592142165356, 'MSE': 3176.7999686387425, 'RMSE': np.float64(56.36310822371973), 'R2': 0.13823306181747963}  train_time=0.0223s
+Elastic Net Regression: {'MAE': 37.32317882630821, 'MSE': 3163.588511442921, 'RMSE': np.float64(56.24578661058018), 'R2': 0.14181691888401415}  train_time=0.0457s
 
 === 5-Fold CV Performance (mean) ===
-Linear Regression: {'MAE': np.float64(43.060934602042586), 'MSE': np.float64(5506.902624438633), 'RMSE': np.float64(74.20850776318463), 'R2': np.float64(0.3109981525273783)}
-Ridge Regression: {'MAE': np.float64(44.0681887117626), 'MSE': np.float64(4932.953166502285), 'RMSE': np.float64(70.23498534564014), 'R2': np.float64(0.37138336104377145)}
+Linear Regression: {'MAE': np.float64(43.06093460204257), 'MSE': np.float64(5506.902624438634), 'RMSE': np.float64(74.20850776318463), 'R2': np.float64(0.3109981525273783)}
+Ridge Regression: {'MAE': np.float64(44.068188711762595), 'MSE': np.float64(4932.953166502282), 'RMSE': np.float64(70.23498534564013), 'R2': np.float64(0.3713833610437718)}
 Lasso Regression: {'MAE': np.float64(46.23062182708854), 'MSE': np.float64(5281.512734151794), 'RMSE': np.float64(72.67401691217978), 'R2': np.float64(0.33108022245796487)}
-Elastic Net Regression: {'MAE': np.float64(43.848165596615964), 'MSE': np.float64(4939.54633817035), 'RMSE': np.float64(70.28190619334646), 'R2': np.float64(0.3709564807529403)}
+Elastic Net Regression: {'MAE': np.float64(43.848165596615964), 'MSE': np.float64(4939.54633817035), 'RMSE': np.float64(70.28190619334646), 'R2': np.float64(0.3709564807529404)}
 
 Best model by test RMSE: Elastic Net Regression
 

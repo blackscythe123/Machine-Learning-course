@@ -36,6 +36,16 @@ RNG = 42
 sns.set_style("whitegrid")
 
 # ---------------------------------------------------------------------
+# 0. GLOBAL PLOT STYLING (course-wide formatting rules)
+# ---------------------------------------------------------------------
+plt.rcParams['font.family'] = 'serif'
+plt.rcParams['font.serif'] = ['Times New Roman']
+plt.rcParams['font.size'] = 15
+plt.rcParams['legend.fontsize'] = 15
+plt.rcParams['legend.title_fontsize'] = 15
+plt.rcParams['axes.labelweight'] = 'bold'
+
+# ---------------------------------------------------------------------
 # 1. LOAD DATASET
 # ---------------------------------------------------------------------
 WORDS = ["make","address","all","3d","our","over","remove","internet","order","mail",
@@ -86,6 +96,88 @@ for ax, feat in zip(axes.ravel(), top_feats[:3]):
 plt.tight_layout(); plt.savefig("figures/04_boxplots.png", dpi=150); plt.close()
 
 # ---------------------------------------------------------------------
+# 2b. CONSOLIDATED EDA SUMMARY FIGURE (12 subplots on a single page)
+# ---------------------------------------------------------------------
+def build_eda_summary_figure(df, top_feats):
+    """Build a single consolidated EDA figure with 12 subplots for the
+    Spambase dataset.
+
+    Parameters
+    ----------
+    df : DataFrame containing all raw features plus the ``is_spam`` label.
+    top_feats : list of the top ~10 features (by |correlation| with the
+        label), most-correlated first. Used to drive the correlation
+        heatmap, the class-split boxplots (top 3) and the scatter plot
+        (top 2).
+
+    Returns
+    -------
+    fig : the created matplotlib Figure.
+    """
+    # Fixed set of six features called out for individual histograms
+    # (most informative word/char frequencies + capital-run behaviour).
+    hist_feats = ["word_freq_your", "word_freq_you", "word_freq_free",
+                  "char_freq_$", "char_freq_!", "capital_run_length_average"]
+
+    fig, axes = plt.subplots(4, 3, figsize=(24, 22))
+    axes_flat = axes.ravel()
+
+    # (1) Class distribution countplot
+    ax = axes_flat[0]
+    sns.countplot(x=df["is_spam"], ax=ax)
+    ax.set_title("(1) Class Distribution")
+    ax.set_xlabel("Class (0=Ham, 1=Spam)"); ax.set_ylabel("Count")
+
+    # (2)-(7) Six individual histograms, clipped at the 95th percentile
+    for i, feat in enumerate(hist_feats):
+        ax = axes_flat[1 + i]
+        clip_val = df[feat].quantile(0.95)
+        clipped = df[feat].clip(upper=clip_val)
+        sns.histplot(clipped, bins=40, ax=ax, kde=False, color="steelblue")
+        ax.set_title(f"({2+i}) {feat} (95th pct clipped)")
+        ax.set_xlabel(feat); ax.set_ylabel("Count")
+
+    # (8) Correlation heatmap of the top ~10 features + label
+    ax = axes_flat[7]
+    heat_cols = top_feats + ["is_spam"]
+    heat_corr = df[heat_cols].corr()
+    sns.heatmap(heat_corr, annot=True, fmt=".2f", cmap="coolwarm",
+                ax=ax, annot_kws={"size": 8}, cbar=False)
+    ax.set_title("(8) Correlation Heatmap (Top 10 + Label)")
+    ax.tick_params(axis='x', rotation=90, labelsize=8)
+    ax.tick_params(axis='y', rotation=0, labelsize=8)
+
+    # (9)-(11) Three class-split boxplots of the top 3 correlated features
+    for i, feat in enumerate(top_feats[:3]):
+        ax = axes_flat[8 + i]
+        sns.boxplot(x=df["is_spam"], y=df[feat], ax=ax)
+        ax.set_title(f"({9+i}) {feat} by Class")
+        ax.set_xlabel("Class"); ax.set_ylabel(feat)
+
+    # (12) Scatter of the two most-correlated features, colored by class
+    ax = axes_flat[11]
+    feat_x, feat_y = top_feats[0], top_feats[1]
+    scatter = ax.scatter(df[feat_x], df[feat_y], c=df["is_spam"],
+                          cmap="coolwarm", alpha=0.5, s=12)
+    ax.set_title("(12) Top-2 Feature Scatter by Class")
+    ax.set_xlabel(feat_x); ax.set_ylabel(feat_y)
+    legend1 = ax.legend(*scatter.legend_elements(), title="Class", loc="upper right")
+    ax.add_artist(legend1)
+
+    fig.suptitle("Spambase Dataset - Consolidated EDA Summary", fontsize=18, fontweight="bold")
+    fig.tight_layout(rect=[0, 0, 1, 0.97])
+    return fig
+
+# Top ~10 features most correlated (absolute value) with the label,
+# used to drive the heatmap / boxplot / scatter subplots above.
+top10_feats = corr["is_spam"].drop("is_spam").abs().sort_values(ascending=False).head(10).index.tolist()
+
+eda_fig = build_eda_summary_figure(df, top10_feats)
+eda_fig.savefig("figures/00_eda_summary.eps", format="eps", dpi=600)
+eda_fig.savefig("figures/00_eda_summary.png", dpi=150)
+plt.close(eda_fig)
+
+# ---------------------------------------------------------------------
 # 3. PREPROCESSING
 # ---------------------------------------------------------------------
 X_train_raw, X_test_raw, y_train, y_test = train_test_split(
@@ -105,14 +197,72 @@ def evaluate(y_true, y_pred, y_score=None):
     return d
 
 # ---------------------------------------------------------------------
+# 3b. REUSABLE TRAIN/EVALUATE HELPERS FOR CLASSIFIERS
+# ---------------------------------------------------------------------
+def train_and_evaluate_classifier(model, X_train, y_train, X_test, y_test):
+    """Fit a classifier, time the fit and predict steps, score it with
+    predict_proba (or decision_function as a fallback) and evaluate it
+    with the shared `evaluate()` metrics function.
+
+    Returns a dict with the fitted model, predictions, scores, metrics
+    and timings so callers can collapse repeated fit/predict/time blocks.
+    """
+    t0 = time.perf_counter()
+    model.fit(X_train, y_train)
+    fit_time = time.perf_counter() - t0
+
+    t0 = time.perf_counter()
+    y_pred = model.predict(X_test)
+    predict_time = time.perf_counter() - t0
+
+    if hasattr(model, "predict_proba"):
+        y_score = model.predict_proba(X_test)[:, 1]
+    elif hasattr(model, "decision_function"):
+        y_score = model.decision_function(X_test)
+    else:
+        y_score = None
+
+    metrics = evaluate(y_test, y_pred, y_score)
+    return {
+        "model": model,
+        "y_pred": y_pred,
+        "y_score": y_score,
+        "metrics": metrics,
+        "fit_time": fit_time,
+        "predict_time": predict_time,
+    }
+
+
+def evaluate_fitted_classifier(model, X_test, y_test):
+    """Same as train_and_evaluate_classifier but for a model that is
+    already fitted (e.g. a GridSearchCV/RandomizedSearchCV best_estimator_)
+    -- avoids an unnecessary refit while still collapsing the repeated
+    predict/score/evaluate boilerplate.
+    """
+    t0 = time.perf_counter()
+    y_pred = model.predict(X_test)
+    predict_time = time.perf_counter() - t0
+
+    if hasattr(model, "predict_proba"):
+        y_score = model.predict_proba(X_test)[:, 1]
+    elif hasattr(model, "decision_function"):
+        y_score = model.decision_function(X_test)
+    else:
+        y_score = None
+
+    metrics = evaluate(y_test, y_pred, y_score)
+    return {"y_pred": y_pred, "y_score": y_score, "metrics": metrics, "predict_time": predict_time}
+
+# ---------------------------------------------------------------------
 # 4. BASELINE LOGISTIC REGRESSION
 # ---------------------------------------------------------------------
-t0 = time.perf_counter()
-lr_base = LogisticRegression(max_iter=2000, random_state=RNG).fit(X_train, y_train)
-lr_base_time = time.perf_counter() - t0
-lr_base_pred = lr_base.predict(X_test)
-lr_base_score = lr_base.predict_proba(X_test)[:,1]
-lr_base_metrics = evaluate(y_test, lr_base_pred, lr_base_score)
+lr_base_result = train_and_evaluate_classifier(
+    LogisticRegression(max_iter=2000, random_state=RNG), X_train, y_train, X_test, y_test)
+lr_base = lr_base_result["model"]
+lr_base_time = lr_base_result["fit_time"]
+lr_base_pred = lr_base_result["y_pred"]
+lr_base_score = lr_base_result["y_score"]
+lr_base_metrics = lr_base_result["metrics"]
 print("Baseline Logistic Regression:", lr_base_metrics)
 
 # ---------------------------------------------------------------------
@@ -141,9 +291,10 @@ lr_rand_time = time.perf_counter() - t0
 print("LR RandomSearch best:", lr_rand.best_params_, lr_rand.best_score_, f"{lr_rand_time:.2f}s")
 
 lr_best = lr_grid.best_estimator_ if lr_grid.best_score_ >= lr_rand.best_score_ else lr_rand.best_estimator_
-lr_best_pred = lr_best.predict(X_test)
-lr_best_score = lr_best.predict_proba(X_test)[:,1]
-lr_best_metrics = evaluate(y_test, lr_best_pred, lr_best_score)
+lr_best_result = evaluate_fitted_classifier(lr_best, X_test, y_test)
+lr_best_pred = lr_best_result["y_pred"]
+lr_best_score = lr_best_result["y_score"]
+lr_best_metrics = lr_best_result["metrics"]
 print("Tuned Logistic Regression (test):", lr_best_metrics)
 
 # ---------------------------------------------------------------------
@@ -151,13 +302,11 @@ print("Tuned Logistic Regression (test):", lr_best_metrics)
 # ---------------------------------------------------------------------
 svm_kernel_results = {}
 for kernel in ["linear","poly","rbf","sigmoid"]:
-    t0 = time.perf_counter()
-    svc = SVC(kernel=kernel, probability=True, random_state=RNG).fit(X_train, y_train)
-    train_time = time.perf_counter() - t0
-    pred = svc.predict(X_test)
-    score = svc.predict_proba(X_test)[:,1]
-    m = evaluate(y_test, pred, score)
-    m["train_time"] = train_time
+    res = train_and_evaluate_classifier(
+        SVC(kernel=kernel, probability=True, random_state=RNG), X_train, y_train, X_test, y_test)
+    m = dict(res["metrics"])
+    m["train_time"] = res["fit_time"]
+    m["predict_time"] = res["predict_time"]
     svm_kernel_results[kernel] = m
     print(f"SVM ({kernel}):", m)
 
@@ -181,9 +330,10 @@ svm_rand_time = time.perf_counter() - t0
 print("SVM RandomSearch best:", svm_rand.best_params_, svm_rand.best_score_, f"{svm_rand_time:.2f}s")
 
 svm_best = svm_grid.best_estimator_ if svm_grid.best_score_ >= svm_rand.best_score_ else svm_rand.best_estimator_
-svm_best_pred = svm_best.predict(X_test)
-svm_best_score = svm_best.predict_proba(X_test)[:,1]
-svm_best_metrics = evaluate(y_test, svm_best_pred, svm_best_score)
+svm_best_result = evaluate_fitted_classifier(svm_best, X_test, y_test)
+svm_best_pred = svm_best_result["y_pred"]
+svm_best_score = svm_best_result["y_score"]
+svm_best_metrics = svm_best_result["metrics"]
 print("Tuned SVM (test):", svm_best_metrics)
 
 # ---------------------------------------------------------------------

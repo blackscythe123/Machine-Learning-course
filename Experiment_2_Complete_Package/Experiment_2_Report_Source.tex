@@ -79,76 +79,50 @@ the class label \\ \hline
 \end{longtable}
 
 \section{Exploratory Data Analysis}
-Include all relevant visualizations.
-\begin{itemize}
-\item Dataset overview
-\item Statistical summary
-\item Missing value analysis
-\item Class distribution
-\item Correlation matrix
-\item Feature distribution
-\end{itemize}
-
-\subsection*{Figure: Class Distribution}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.55\linewidth]{figures/01_class_distribution.png}
-\caption{Class distribution of the Spambase dataset.}
+\includegraphics[width=\linewidth]{figures/00_eda_summary.png}
+\caption{Consolidated exploratory data analysis (12 subplots, single page): (1) class
+distribution; (2--7) distributions of the six most class-correlated features, split by
+class and clipped at the 95th percentile; (8) correlation heatmap of the ten most
+class-correlated features; (9--11) boxplots of the three most discriminating features by
+class; (12) scatter of the two most correlated features, coloured by class. Exported at
+600 DPI as \texttt{figures/00\_eda\_summary.eps} and reproduced here as PNG.}
 \end{figure}
 
-\textbf{Inference:} The dataset contains 2788 ham emails (60.6\%) and 1813 spam emails
-(39.4\%), a moderate class imbalance rather than a severe one. Because the imbalance is
-mild, accuracy remains a reasonably informative metric, but precision, recall and F1-score
-are still reported throughout to avoid a misleading picture, particularly since a spam
-filter's real-world cost of a false negative (spam reaching the inbox) differs from that
-of a false positive (a genuine email marked as spam). Stratified sampling was therefore
-used for every train-test split and cross-validation fold so that both classes are
-represented proportionally in each partition.
+\textbf{Inference (subplot 1, class distribution):} The dataset contains 2788 ham emails
+(60.6\%) and 1813 spam emails (39.4\%), a moderate class imbalance rather than a severe
+one. Because the imbalance is mild, accuracy remains a reasonably informative metric, but
+precision, recall and F1-score are still reported throughout to avoid a misleading
+picture, particularly since a spam filter's real-world cost of a false negative (spam
+reaching the inbox) differs from that of a false positive (a genuine email marked as
+spam). Stratified sampling was therefore used for every train-test split and
+cross-validation fold so that both classes are represented proportionally in each
+partition.
 
-\subsection*{Figure: Correlation Heatmap}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.85\linewidth]{figures/02_correlation_heatmap.png}
-\caption{Correlation heatmap of the 15 highest-variance features and the class label.}
-\end{figure}
+\textbf{Inference (subplots 2--7, feature distributions):} Spam emails show a visibly
+higher density at non-zero values of \texttt{word\_freq\_free}, \texttt{word\_freq\_your},
+\texttt{char\_freq\_!} and \texttt{char\_freq\_\$}, while ham emails are heavily
+concentrated near zero for these features. \texttt{capital\_run\_length\_average} is also
+right-shifted for spam. All features are strongly right-skewed with a long tail of large
+values, which is the reason Gaussian Na\"ive Bayes (which assumes normally distributed
+features) is expected to under-perform relative to Bernoulli Na\"ive Bayes on this data.
 
-\textbf{Inference:} Among all 57 features, \texttt{word\_freq\_your} (r = 0.383),
-\texttt{word\_freq\_you} (r = 0.274), \texttt{word\_freq\_free} (r = 0.263), and the two
-capital-run-length features (r $\approx$ 0.22--0.25) show the strongest positive
-correlation with the spam label. This matches intuition: spam emails tend to address the
-reader directly (``you'', ``your''), advertise free offers, and use long runs of capital
-letters for emphasis. No pair of features shows extreme multicollinearity ($|r| > 0.9$),
-so no features were dropped prior to modelling.
+\textbf{Inference (subplot 8, correlation heatmap):} Among all 57 features,
+\texttt{word\_freq\_your} (r = 0.383), \texttt{word\_freq\_you} (r = 0.274),
+\texttt{word\_freq\_free} (r = 0.263), and the two capital-run-length features
+(r $\approx$ 0.22--0.25) show the strongest positive correlation with the spam label.
+This matches intuition: spam emails tend to address the reader directly (``you'',
+``your''), advertise free offers, and use long runs of capital letters for emphasis. No
+pair of features shows extreme multicollinearity ($|r| > 0.9$), so no features were
+dropped prior to modelling.
 
-\subsection*{Figure: Feature Distributions}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.95\linewidth]{figures/03_histograms.png}
-\caption{Distribution of six discriminative features, split by class (clipped at the
-95th percentile for readability).}
-\end{figure}
-
-\textbf{Inference:} Spam emails show a visibly higher density at non-zero values of
-\texttt{word\_freq\_free}, \texttt{word\_freq\_your}, \texttt{char\_freq\_!} and
-\texttt{char\_freq\_\$}, while ham emails are heavily concentrated near zero for these
-features. \texttt{capital\_run\_length\_average} is also right-shifted for spam. All
-features are strongly right-skewed with a long tail of large values, which is the reason
-Gaussian Na\"ive Bayes (which assumes normally distributed features) is expected to
-under-perform relative to Bernoulli Na\"ive Bayes on this data.
-
-\subsection*{Figure: Boxplots}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.95\linewidth]{figures/04_boxplots.png}
-\caption{Boxplots of key features by class (extreme outliers hidden for scale).}
-\end{figure}
-
-\textbf{Inference:} The interquartile ranges for \texttt{word\_freq\_free},
-\texttt{word\_freq\_your} and the character-frequency features are consistently higher
-and wider for the spam class, which makes them strong discriminating features. Ham
-emails have near-zero medians for almost every feature shown, which explains why simple
-thresholding on a handful of features (as Bernoulli NB effectively does after
-binarization) already achieves strong separation.
+\textbf{Inference (subplots 9--11, boxplots):} The interquartile ranges for
+\texttt{word\_freq\_free}, \texttt{word\_freq\_your} and the character-frequency features
+are consistently higher and wider for the spam class, which makes them strong
+discriminating features. Ham emails have near-zero medians for almost every feature
+shown, which explains why simple thresholding on a handful of features (as Bernoulli NB
+effectively does after binarization) already achieves strong separation.
 
 \section{Data Preprocessing}
 \begin{itemize}
