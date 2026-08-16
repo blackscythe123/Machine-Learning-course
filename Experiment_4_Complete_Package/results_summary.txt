@@ -2,24 +2,24 @@ Dataset shape: (4601, 58)
 Class distribution: {0: 2788, 1: 1813}
 
 LR GridSearch best params: {'C': 100, 'penalty': 'l1', 'solver': 'liblinear'}
-LR GridSearch best CV acc: 0.9261  time=71.04s
+LR GridSearch best CV acc: 0.9261  time=54.41s
 LR RandomSearch best params: {'solver': 'liblinear', 'penalty': 'l1', 'C': 100}
-LR RandomSearch best CV acc: 0.9261  time=26.26s
+LR RandomSearch best CV acc: 0.9261  time=26.24s
 
 SVM GridSearch best params: {'C': 10, 'gamma': 'scale', 'kernel': 'rbf'}
-SVM GridSearch best CV acc: 0.9356  time=17.23s
+SVM GridSearch best CV acc: 0.9356  time=18.10s
 SVM RandomSearch best params: {'kernel': 'rbf', 'gamma': 'auto', 'C': 1}
-SVM RandomSearch best CV acc: 0.9321  time=20.44s
+SVM RandomSearch best CV acc: 0.9321  time=21.96s
 
-Baseline LR test metrics: {'accuracy': 0.9294245385450597, 'precision': 0.9209039548022598, 'recall': 0.8980716253443526, 'f1': 0.9093444909344491, 'roc_auc': 0.9701956021604116}  train_time=0.0135s
+Baseline LR test metrics: {'accuracy': 0.9294245385450597, 'precision': 0.9209039548022598, 'recall': 0.8980716253443526, 'f1': 0.9093444909344491, 'roc_auc': 0.9701956021604116}  train_time=0.0167s
 Tuned LR test metrics: {'accuracy': 0.9261672095548317, 'precision': 0.9202279202279202, 'recall': 0.8898071625344353, 'f1': 0.9047619047619048, 'roc_auc': 0.967860422405877}
 
 Tuned SVM test metrics: {'accuracy': 0.9207383279044516, 'precision': 0.9142857142857143, 'recall': 0.8815426997245179, 'f1': 0.8976157082748948, 'roc_auc': 0.9701807912951609}
 
-SVM[linear] test metrics: {'accuracy': 0.9294245385450597, 'precision': 0.9209039548022598, 'recall': 0.8980716253443526, 'f1': 0.9093444909344491, 'roc_auc': 0.9694846806283757, 'train_time': 0.8691883999854326, 'predict_time': 0.008195800008252263}
-SVM[poly] test metrics: {'accuracy': 0.7795874049945711, 'precision': 0.9597701149425287, 'recall': 0.46005509641873277, 'f1': 0.6219739292364991, 'roc_auc': 0.9554711336236263, 'train_time': 0.7492076000198722, 'predict_time': 0.024738100124523044}
-SVM[rbf] test metrics: {'accuracy': 0.9272529858849077, 'precision': 0.9277456647398844, 'recall': 0.8842975206611571, 'f1': 0.9055007052186178, 'roc_auc': 0.9666854270959843, 'train_time': 0.7071053001563996, 'predict_time': 0.04692079988308251}
-SVM[sigmoid] test metrics: {'accuracy': 0.8849077090119435, 'precision': 0.8599439775910365, 'recall': 0.8457300275482094, 'f1': 0.8527777777777777, 'roc_auc': 0.9386459906987766, 'train_time': 0.4752034000121057, 'predict_time': 0.018187599955126643}
+SVM[linear] test metrics: {'accuracy': 0.9294245385450597, 'precision': 0.9209039548022598, 'recall': 0.8980716253443526, 'f1': 0.9093444909344491, 'roc_auc': 0.9694846806283757, 'train_time': 0.8733930000162218, 'predict_time': 0.00987639999948442}
+SVM[poly] test metrics: {'accuracy': 0.7795874049945711, 'precision': 0.9597701149425287, 'recall': 0.46005509641873277, 'f1': 0.6219739292364991, 'roc_auc': 0.9554711336236263, 'train_time': 0.7524888000043575, 'predict_time': 0.022829199995612726}
+SVM[rbf] test metrics: {'accuracy': 0.9272529858849077, 'precision': 0.9277456647398844, 'recall': 0.8842975206611571, 'f1': 0.9055007052186178, 'roc_auc': 0.9666854270959843, 'train_time': 0.5472294999926817, 'predict_time': 0.04423369999858551}
+SVM[sigmoid] test metrics: {'accuracy': 0.8849077090119435, 'precision': 0.8599439775910365, 'recall': 0.8457300275482094, 'f1': 0.8527777777777777, 'roc_auc': 0.9386459906987766, 'train_time': 0.47360609998577274, 'predict_time': 0.01704760000575334}
 
 LR 5-fold CV scores: [0.9415760869565217, 0.9252717391304348, 0.9347826086956522, 0.9116847826086957, 0.9171195652173914]  mean=0.9261 std=0.0110
 SVM 5-fold CV scores: [0.9442934782608695, 0.9415760869565217, 0.9347826086956522, 0.9307065217391305, 0.9266304347826086]  mean=0.9356 std=0.0066

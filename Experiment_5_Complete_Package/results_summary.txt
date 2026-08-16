@@ -1,0 +1,70 @@
+Dataset shape: (569, 32)
+Class distribution: {'Benign': 357, 'Malignant': 212}
+
+Baseline Decision Tree test metrics: {'accuracy': 0.9122807017543859, 'precision': 0.9558823529411765, 'recall': 0.9027777777777778, 'f1': 0.9285714285714286, 'roc_auc': 0.9156746031746031, 'train_time': 0.004038500017486513, 'predict_time': 0.000176099973032251}
+
+Decision Tree GridSearchCV best params: {'criterion': 'gini', 'max_depth': 5, 'min_samples_leaf': 4, 'min_samples_split': 2}
+Decision Tree GridSearchCV best CV accuracy: 0.9385
+Tuned Decision Tree test metrics: {'accuracy': 0.9035087719298246, 'precision': 0.9420289855072463, 'recall': 0.9027777777777778, 'f1': 0.9219858156028369, 'roc_auc': 0.9358465608465609, 'train_time': 0.002736399997957051, 'predict_time': 0.00017340001068077981}
+
+Random Forest GridSearchCV best params: {'bootstrap': True, 'max_depth': 10, 'max_features': 'log2', 'n_estimators': 100}
+Random Forest GridSearchCV best CV accuracy: 0.9648
+Tuned Random Forest test metrics: {'accuracy': 0.956140350877193, 'precision': 0.958904109589041, 'recall': 0.9722222222222222, 'f1': 0.9655172413793104, 'roc_auc': 0.9923941798941799, 'train_time': 0.06965910000144504, 'predict_time': 0.002810000005410984}
+
+Decision Tree sweep table (min_samples_split=2, min_samples_leaf=4 fixed):
+criterion max_depth  avg_cv_accuracy  avg_cv_f1
+  entropy         3         0.931868   0.946329
+  entropy         5         0.925275   0.940394
+  entropy         7         0.927473   0.942130
+  entropy        10         0.927473   0.942130
+  entropy      None         0.927473   0.942130
+     gini         3         0.931868   0.945548
+     gini         5         0.938462   0.950580
+     gini         7         0.934066   0.947040
+     gini        10         0.934066   0.947040
+     gini      None         0.934066   0.947040
+
+Random Forest sweep table (max_features=log2, bootstrap=True fixed):
+ n_estimators max_depth max_features  avg_cv_accuracy  avg_cv_f1
+           50         5         log2         0.956044   0.965091
+           50        10         log2         0.960440   0.968507
+           50        15         log2         0.960440   0.968507
+           50      None         log2         0.960440   0.968507
+          100         5         log2         0.958242   0.966767
+          100        10         log2         0.964835   0.971801
+          100        15         log2         0.964835   0.971801
+          100      None         log2         0.964835   0.971801
+          200         5         log2         0.958242   0.966609
+          200        10         log2         0.960440   0.968321
+          200        15         log2         0.960440   0.968321
+          200      None         log2         0.960440   0.968321
+
+Decision Tree 5-fold CV scores: [0.945054945054945, 0.945054945054945, 0.9120879120879121, 0.9230769230769231, 0.967032967032967]  mean=0.9385 std=0.0192
+Random Forest 5-fold CV scores: [0.967032967032967, 0.978021978021978, 0.9340659340659341, 0.9560439560439561, 0.989010989010989]  mean=0.9648 std=0.0189
+
+Top 10 Random Forest feature importances:
+worst concave points    0.130588
+worst area              0.118600
+worst radius            0.107072
+mean perimeter          0.086259
+worst perimeter         0.069519
+mean radius             0.065605
+mean concave points     0.063443
+mean concavity          0.061326
+mean area               0.050850
+area error              0.040344
+
+Decision Tree overfitting sweep (max_depth -> train_acc, test_acc):
+  max_depth=1: train=0.9231, test=0.9211
+  max_depth=2: train=0.9582, test=0.8947
+  max_depth=3: train=0.9758, test=0.9386
+  max_depth=4: train=0.9868, test=0.9386
+  max_depth=5: train=0.9934, test=0.9211
+  max_depth=6: train=0.9978, test=0.9123
+  max_depth=7: train=1.0000, test=0.9123
+  max_depth=8: train=1.0000, test=0.9123
+  max_depth=10: train=1.0000, test=0.9123
+  max_depth=12: train=1.0000, test=0.9123
+  max_depth=15: train=1.0000, test=0.9123
+  max_depth=20: train=1.0000, test=0.9123
+  max_depth=None: train=1.0000, test=0.9123
