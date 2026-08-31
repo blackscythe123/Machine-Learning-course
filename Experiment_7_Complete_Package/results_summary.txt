@@ -1,0 +1,97 @@
+Dataset shape: (4601, 58)
+Class distribution: {0: 2788, 1: 1813}
+PCA components for 95% variance: 48 of 57
+
+SVM [No-PCA] best_params={'C': 10} best_cv_acc=0.9356
+SVM [No-PCA] test_metrics={'accuracy': 0.9207383279044516, 'precision': 0.9142857142857143, 'recall': 0.8815426997245179, 'f1': 0.8976157082748948, 'roc_auc': 0.9701807912951609, 'train_time': 0.4837706000544131}
+SVM [No-PCA] 5-fold CV: [0.9442934782608695, 0.9415760869565217, 0.9347826086956522, 0.9307065217391305, 0.9266304347826086] mean=0.9356 std=0.0066
+
+SVM [With-PCA] best_params={'C': 10} best_cv_acc=0.9332
+SVM [With-PCA] test_metrics={'accuracy': 0.9272529858849077, 'precision': 0.9252873563218391, 'recall': 0.8870523415977961, 'f1': 0.9057665260196905, 'roc_auc': 0.9698203935740594, 'train_time': 0.4220117999939248}
+SVM [With-PCA] 5-fold CV: [0.9429347826086957, 0.938858695652174, 0.9347826086956522, 0.9334239130434783, 0.9157608695652174] mean=0.9332 std=0.0093
+
+Naive Bayes [No-PCA] best_params={'var_smoothing': 1e-07} best_cv_acc=0.8149
+Naive Bayes [No-PCA] test_metrics={'accuracy': 0.8327904451682954, 'precision': 0.7145790554414785, 'recall': 0.9586776859504132, 'f1': 0.8188235294117647, 'roc_auc': 0.9376191040413915, 'train_time': 0.002900900086387992}
+Naive Bayes [No-PCA] 5-fold CV: [0.8206521739130435, 0.8165760869565217, 0.8342391304347826, 0.8043478260869565, 0.7989130434782609] mean=0.8149 std=0.0125
+
+Naive Bayes [With-PCA] best_params={'var_smoothing': 1e-09} best_cv_acc=0.8046
+Naive Bayes [With-PCA] test_metrics={'accuracy': 0.8338762214983714, 'precision': 0.7323008849557522, 'recall': 0.9118457300275482, 'f1': 0.8122699386503067, 'roc_auc': 0.9265701985643335, 'train_time': 0.0019002999179065228}
+Naive Bayes [With-PCA] 5-fold CV: [0.8491847826086957, 0.7676630434782609, 0.845108695652174, 0.8206521739130435, 0.7404891304347826] mean=0.8046 std=0.0433
+
+KNN [No-PCA] best_params={'n_neighbors': 11, 'weights': 'distance'} best_cv_acc=0.9215
+KNN [No-PCA] test_metrics={'accuracy': 0.9239956568946797, 'precision': 0.9058171745152355, 'recall': 0.9008264462809917, 'f1': 0.9033149171270718, 'roc_auc': 0.9693069502453668, 'train_time': 0.0004419999895617366}
+KNN [No-PCA] 5-fold CV: [0.9279891304347826, 0.9225543478260869, 0.9293478260869565, 0.9252717391304348, 0.9021739130434783] mean=0.9215 std=0.0099
+
+KNN [With-PCA] best_params={'n_neighbors': 11, 'weights': 'distance'} best_cv_acc=0.9207
+KNN [With-PCA] test_metrics={'accuracy': 0.9218241042345277, 'precision': 0.907563025210084, 'recall': 0.8925619834710744, 'f1': 0.9, 'roc_auc': 0.9670902574128379, 'train_time': 0.0006939999293535948}
+KNN [With-PCA] 5-fold CV: [0.9252717391304348, 0.9225543478260869, 0.9320652173913043, 0.9211956521739131, 0.9021739130434783] mean=0.9207 std=0.0100
+
+Logistic Regression [No-PCA] best_params={'C': 10} best_cv_acc=0.9245
+Logistic Regression [No-PCA] test_metrics={'accuracy': 0.9261672095548317, 'precision': 0.9202279202279202, 'recall': 0.8898071625344353, 'f1': 0.9047619047619048, 'roc_auc': 0.9688330025573428, 'train_time': 0.021978899952955544}
+Logistic Regression [No-PCA] 5-fold CV: [0.9429347826086957, 0.9225543478260869, 0.9347826086956522, 0.907608695652174, 0.9144021739130435] mean=0.9245 std=0.0129
+
+Logistic Regression [With-PCA] best_params={'C': 10} best_cv_acc=0.9231
+Logistic Regression [With-PCA] test_metrics={'accuracy': 0.9294245385450597, 'precision': 0.9185393258426966, 'recall': 0.9008264462809917, 'f1': 0.9095966620305981, 'roc_auc': 0.9703585216781697, 'train_time': 0.010815300047397614}
+Logistic Regression [With-PCA] 5-fold CV: [0.9347826086956522, 0.9239130434782609, 0.9279891304347826, 0.9130434782608695, 0.9157608695652174] mean=0.9231 std=0.0080
+
+Decision Tree [No-PCA] best_params={'max_depth': 10} best_cv_acc=0.9223
+Decision Tree [No-PCA] test_metrics={'accuracy': 0.9087947882736156, 'precision': 0.8974358974358975, 'recall': 0.8677685950413223, 'f1': 0.8823529411764706, 'roc_auc': 0.9053190754070519, 'train_time': 0.024036900023929775}
+Decision Tree [No-PCA] 5-fold CV: [0.9266304347826086, 0.9320652173913043, 0.9211956521739131, 0.9157608695652174, 0.9157608695652174] mean=0.9223 std=0.0063
+
+Decision Tree [With-PCA] best_params={'max_depth': 5} best_cv_acc=0.8875
+Decision Tree [With-PCA] test_metrics={'accuracy': 0.8762214983713354, 'precision': 0.8151898734177215, 'recall': 0.8870523415977961, 'f1': 0.8496042216358839, 'roc_auc': 0.9087132320270151, 'train_time': 0.03998989996034652}
+Decision Tree [With-PCA] 5-fold CV: [0.8817934782608695, 0.8817934782608695, 0.9021739130434783, 0.8913043478260869, 0.8804347826086957] mean=0.8875 std=0.0083
+
+Random Forest [No-PCA] best_params={'max_depth': None, 'n_estimators': 50} best_cv_acc=0.9530
+Random Forest [No-PCA] test_metrics={'accuracy': 0.9424538545059717, 'precision': 0.9479768786127167, 'recall': 0.9035812672176309, 'f1': 0.92524682651622, 'roc_auc': 0.9827107832972937, 'train_time': 0.12570829992182553}
+Random Forest [No-PCA] 5-fold CV: [0.9605978260869565, 0.9538043478260869, 0.9565217391304348, 0.9470108695652174, 0.9470108695652174] mean=0.9530 std=0.0053
+
+Random Forest [With-PCA] best_params={'max_depth': None, 'n_estimators': 100} best_cv_acc=0.9318
+Random Forest [With-PCA] test_metrics={'accuracy': 0.9196525515743756, 'precision': 0.9093484419263456, 'recall': 0.8842975206611571, 'f1': 0.8966480446927374, 'roc_auc': 0.9692600491720726, 'train_time': 0.6193795000435784}
+Random Forest [With-PCA] 5-fold CV: [0.9279891304347826, 0.936141304347826, 0.9470108695652174, 0.9415760869565217, 0.90625] mean=0.9318 std=0.0142
+
+AdaBoost [No-PCA] best_params={'n_estimators': 100} best_cv_acc=0.9356
+AdaBoost [No-PCA] test_metrics={'accuracy': 0.9272529858849077, 'precision': 0.9252873563218391, 'recall': 0.8870523415977961, 'f1': 0.9057665260196905, 'roc_auc': 0.9777886390789616, 'train_time': 0.32250369992107153}
+AdaBoost [No-PCA] 5-fold CV: [0.9320652173913043, 0.9307065217391305, 0.9347826086956522, 0.9347826086956522, 0.9456521739130435] mean=0.9356 std=0.0053
+
+AdaBoost [With-PCA] best_params={'n_estimators': 100} best_cv_acc=0.9046
+AdaBoost [With-PCA] test_metrics={'accuracy': 0.8957654723127035, 'precision': 0.8869565217391304, 'recall': 0.8429752066115702, 'f1': 0.864406779661017, 'roc_auc': 0.9566609397987698, 'train_time': 1.0249914999585599}
+AdaBoost [With-PCA] 5-fold CV: [0.907608695652174, 0.9130434782608695, 0.9198369565217391, 0.9008152173913043, 0.8817934782608695] mean=0.9046 std=0.0130
+
+Gradient Boosting [No-PCA] best_params={'n_estimators': 100} best_cv_acc=0.9459
+Gradient Boosting [No-PCA] test_metrics={'accuracy': 0.9391965255157437, 'precision': 0.9373219373219374, 'recall': 0.90633608815427, 'f1': 0.9215686274509803, 'roc_auc': 0.9825947648528294, 'train_time': 0.6956511000171304}
+Gradient Boosting [No-PCA] 5-fold CV: [0.9429347826086957, 0.9470108695652174, 0.9524456521739131, 0.9429347826086957, 0.9442934782608695] mean=0.9459 std=0.0036
+
+Gradient Boosting [With-PCA] best_params={'n_estimators': 100} best_cv_acc=0.9264
+Gradient Boosting [With-PCA] test_metrics={'accuracy': 0.9153094462540716, 'precision': 0.8991596638655462, 'recall': 0.8842975206611571, 'f1': 0.8916666666666667, 'roc_auc': 0.9694797436732921, 'train_time': 2.4549216999439523}
+Gradient Boosting [With-PCA] 5-fold CV: [0.9239130434782609, 0.9252717391304348, 0.9415760869565217, 0.9320652173913043, 0.9089673913043478] mean=0.9264 std=0.0107
+
+XGBoost [No-PCA] best_params={'learning_rate': 0.3, 'n_estimators': 100} best_cv_acc=0.9554
+XGBoost [No-PCA] test_metrics={'accuracy': 0.9402823018458197, 'precision': 0.9230769230769231, 'recall': 0.9256198347107438, 'f1': 0.9243466299862448, 'roc_auc': 0.9862851387778073, 'train_time': 0.23360349994618446}
+XGBoost [No-PCA] 5-fold CV: [0.9619565217391305, 0.9565217391304348, 0.9633152173913043, 0.9497282608695652, 0.9456521739130435] mean=0.9554 std=0.0068
+
+XGBoost [With-PCA] best_params={'learning_rate': 0.1, 'n_estimators': 100} best_cv_acc=0.9389
+XGBoost [With-PCA] test_metrics={'accuracy': 0.9272529858849077, 'precision': 0.9088397790055248, 'recall': 0.90633608815427, 'f1': 0.9075862068965517, 'roc_auc': 0.9778478825399647, 'train_time': 0.2973303999751806}
+XGBoost [With-PCA] 5-fold CV: [0.9442934782608695, 0.9415760869565217, 0.9483695652173914, 0.938858695652174, 0.9211956521739131] mean=0.9389 std=0.0094
+
+Stacking [No-PCA] best_params={'final_estimator__C': 0.1} best_cv_acc=0.9408
+Stacking [No-PCA] test_metrics={'accuracy': 0.9294245385450597, 'precision': 0.9138888888888889, 'recall': 0.90633608815427, 'f1': 0.9100968188105117, 'roc_auc': 0.9754534593244272, 'train_time': 3.5152387999696657}
+Stacking [No-PCA] 5-fold CV: [0.9375, 0.9456521739130435, 0.9442934782608695, 0.9415760869565217, 0.9347826086956522] mean=0.9408 std=0.0041
+
+Stacking [With-PCA] best_params={'final_estimator__C': 1} best_cv_acc=0.9323
+Stacking [With-PCA] test_metrics={'accuracy': 0.9261672095548317, 'precision': 0.9250720461095101, 'recall': 0.8842975206611571, 'f1': 0.9042253521126761, 'roc_auc': 0.9678949810914621, 'train_time': 2.878348199999891}
+Stacking [With-PCA] 5-fold CV: [0.9334239130434783, 0.9320652173913043, 0.9415760869565217, 0.9402173913043478, 0.9144021739130435] mean=0.9323 std=0.0097
+
+
+=== Comparison table ===
+              Model  No-PCA Test Acc  No-PCA Test F1  No-PCA CV Acc  With-PCA Test Acc  With-PCA Test F1  With-PCA CV Acc
+                SVM         0.920738        0.897616       0.935598           0.927253          0.905767         0.933152
+        Naive Bayes         0.832790        0.818824       0.814946           0.833876          0.812270         0.804620
+                KNN         0.923996        0.903315       0.921467           0.921824          0.900000         0.920652
+Logistic Regression         0.926167        0.904762       0.924457           0.929425          0.909597         0.923098
+      Decision Tree         0.908795        0.882353       0.922283           0.876221          0.849604         0.887500
+      Random Forest         0.942454        0.925247       0.952989           0.919653          0.896648         0.931793
+           AdaBoost         0.927253        0.905767       0.935598           0.895765          0.864407         0.904620
+  Gradient Boosting         0.939197        0.921569       0.945924           0.915309          0.891667         0.926359
+            XGBoost         0.940282        0.924347       0.955435           0.927253          0.907586         0.938859
+           Stacking         0.929425        0.910097       0.940761           0.926167          0.904225         0.932337

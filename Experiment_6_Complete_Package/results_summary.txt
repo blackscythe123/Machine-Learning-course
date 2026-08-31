@@ -1,0 +1,57 @@
+Dataset shape: (569, 32)
+Class distribution: {'Benign': 357, 'Malignant': 212}
+
+Bagging best params: {'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50}
+Bagging best CV accuracy: 0.9604
+Tuned Bagging test metrics: {'accuracy': 0.956140350877193, 'precision': 0.958904109589041, 'recall': 0.9722222222222222, 'f1': 0.9655172413793104, 'roc_auc': 0.9930555555555556, 'train_time': 0.19461370003409684, 'predict_time': 0.008881399990059435}
+
+AdaBoost best params: {'learning_rate': 1.0, 'n_estimators': 100}
+AdaBoost best CV accuracy: 0.9802
+Tuned AdaBoost test metrics: {'accuracy': 0.956140350877193, 'precision': 0.9466666666666667, 'recall': 0.9861111111111112, 'f1': 0.9659863945578231, 'roc_auc': 0.9818121693121693, 'train_time': 0.3925539000192657, 'predict_time': 0.018023099983111024}
+
+Gradient Boosting best params: {'learning_rate': 0.2, 'max_depth': 2, 'n_estimators': 200}
+Gradient Boosting best CV accuracy: 0.9736
+Tuned Gradient Boosting test metrics: {'accuracy': 0.956140350877193, 'precision': 0.9466666666666667, 'recall': 0.9861111111111112, 'f1': 0.9659863945578231, 'roc_auc': 0.9930555555555556, 'train_time': 0.7669567000120878, 'predict_time': 0.0009668999118730426}
+
+Boosting model carried forward: AdaBoost
+
+Stacking best params: {'final_estimator__C': 1, 'passthrough': True}
+Stacking best CV accuracy: 0.9516
+Tuned Stacking test metrics: {'accuracy': 0.9649122807017544, 'precision': 0.9594594594594594, 'recall': 0.9861111111111112, 'f1': 0.9726027397260274, 'roc_auc': 0.9957010582010581, 'train_time': 1.0513938999501988, 'predict_time': 0.0039003000129014254}
+
+Bagging 5-fold CV: [0.9560439560439561, 0.9560439560439561, 0.9340659340659341, 0.967032967032967, 0.989010989010989] mean=0.9604 std=0.0179
+AdaBoost 5-fold CV: [0.989010989010989, 1.0, 0.945054945054945, 0.978021978021978, 0.989010989010989] mean=0.9802 std=0.0189
+Stacking 5-fold CV: [0.989010989010989, 0.9340659340659341, 0.945054945054945, 0.945054945054945, 0.945054945054945] mean=0.9516 std=0.0192
+
+Bagging sweep:
+ n_estimators  max_samples  avg_cv_accuracy  avg_cv_f1
+           10          0.5         0.951648   0.961019
+           50          0.5         0.960440   0.968138
+          100          0.5         0.953846   0.962975
+           10          0.7         0.949451   0.959370
+           50          0.7         0.958242   0.966520
+          100          0.7         0.960440   0.968288
+           10          1.0         0.956044   0.964839
+           50          1.0         0.960440   0.968325
+          100          1.0         0.960440   0.968418
+
+AdaBoost sweep:
+ n_estimators  learning_rate  avg_cv_accuracy  avg_cv_f1
+           50           0.01         0.925275   0.940745
+          100           0.01         0.934066   0.947975
+          200           0.01         0.936264   0.949600
+           50           0.10         0.953846   0.963289
+          100           0.10         0.960440   0.968602
+          200           0.10         0.971429   0.977269
+           50           1.00         0.967033   0.974002
+          100           1.00         0.980220   0.984378
+          200           1.00         0.978022   0.982608
+
+Stacking sweep:
+ final_estimator_C  passthrough  avg_cv_accuracy  avg_cv_f1
+               0.1         True         0.942857   0.954679
+               0.1        False         0.949451   0.960134
+               1.0         True         0.951648   0.961473
+               1.0        False         0.949451   0.959729
+              10.0         True         0.951648   0.961537
+              10.0        False         0.949451   0.959729
