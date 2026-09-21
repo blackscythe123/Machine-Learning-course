@@ -1,0 +1,5 @@
+optimizer,configs,best_val_acc,median_val_acc,reach_train90,fastest_train90,reach_val50,fastest_val50
+GD,3,0.373046875,0.0390625,0,,0,
+SGD,9,0.759765625,0.421875,1,64.0,4,7.0
+SGD+momentum,9,0.76953125,0.740234375,4,11.0,7,2.0
+Adam,9,0.77734375,0.763671875,6,7.0,8,2.0

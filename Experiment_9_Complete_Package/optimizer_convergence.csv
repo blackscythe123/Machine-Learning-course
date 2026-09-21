@@ -1,0 +1,5 @@
+optimizer,lr,batch,final_val_acc,epochs_to_val_acc_40,epochs_to_val_acc_50,epochs_to_train_acc_90,final_train_loss
+GD,0.1,2386,0.37304688,,,,3.9176621
+SGD,0.1,32,0.7597656,6.0,7.0,64.0,0.2398869
+SGD+momentum,0.1,32,0.76953125,2.0,2.0,11.0,0.012319883
+Adam,0.01,512,0.77734375,3.0,3.0,12.0,0.0073001706

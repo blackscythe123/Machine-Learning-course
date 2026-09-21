@@ -1,0 +1,16 @@
+factor,value,val_acc,change_vs_best,is_best
+activation,relu,0.75390625,-0.0234375,False
+activation,tanh,0.763671875,-0.013671875,False
+activation,sigmoid,0.77734375,0.0,True
+cost,CE,0.77734375,0.0,True
+cost,MSE,0.763671875,-0.013671875,False
+optimizer,GD,0.0390625,-0.73828125,False
+optimizer,SGD,0.248046875,-0.529296875,False
+optimizer,SGD+momentum,0.62109375,-0.15625,False
+optimizer,Adam,0.77734375,0.0,True
+lr,0.001,0.77734375,0.0,False
+lr,0.01,0.77734375,0.0,True
+lr,0.1,0.587890625,-0.189453125,False
+batch,32,0.689453125,-0.087890625,False
+batch,128,0.763671875,-0.013671875,False
+batch,512,0.77734375,0.0,True
