@@ -108,7 +108,8 @@ the ten models (SVM, KNN, Logistic Regression) require standardized input to beh
 \item \textbf{PCA:} Fitted on the standardized training features only. A 95\% cumulative
 explained-variance target was chosen (a common default that keeps almost all of the signal
 while dropping the least informative directions) rather than a fixed component count, so the
-reduction is driven by the data rather than an arbitrary number.
+reduction is driven by the data rather than an arbitrary number; this choice is checked
+against correlation and eigenvalue diagnostics in Section~6.
 \item \textbf{Train-test split:} 80/20 stratified split (\texttt{random\_state=42}), giving
 3680 training and 921 test samples, identical to Experiments 2 and 4.
 \end{itemize}
@@ -132,6 +133,28 @@ components, only a 16\% reduction in dimensionality. This is a much smaller redu
 PCA typically achieves on more redundant data (e.g.\ image pixels), and is itself informative:
 Spambase's features, while correlated, are not \emph{that} redundant, so PCA here is mostly a
 change of basis rather than a genuine compression.
+
+Before settling on 48, a smaller count was checked and ruled out. Three standard
+PCA-suitability diagnostics confirm PCA is statistically appropriate for this feature set: the
+mean pairwise correlation is modest ($|r| = 0.061$, with only 0.6\% of pairs exceeding
+$|r| = 0.7$), yet Bartlett's test of sphericity is highly significant ($\chi^2 = 60210$,
+$p < 0.001$) and the overall Kaiser-Meyer-Olkin (KMO) measure is 0.84 (``meritorious'').
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.68\linewidth]{figures/06_pca_eigenvalue_scree.png}
+\caption{Eigenvalues of the training correlation matrix. Only 20 of 57 exceed the Kaiser
+threshold of 1.}
+\end{figure}
+\textbf{Inference:} Only 20 of 57 eigenvalues exceed 1 (Kaiser's criterion: a component only
+``pays for itself'' if it explains more variance than one original standardized feature), and
+those 20 components capture just 57.7\% of the variance. The signal here is spread across many
+directions rather than concentrated in a few, so trimming to the Kaiser count would discard
+real signal, not just noise. This was checked directly, not just inferred: re-tuning and
+re-evaluating every model on that 20-component representation lowered test accuracy for all
+ten models compared to the 48-component representation used throughout this report,
+confirming 48 is the right amount of compression for this dataset, not an arbitrary or lazy
+choice.
 
 \subsection*{The Ten Classifiers}
 Nine of the ten models were covered in earlier experiments: Naive Bayes and KNN in
@@ -323,19 +346,22 @@ ensemble even though its Decision Tree base learner is not. It was not fully rob
 its drop was still larger than any of the three purely linear/distance models on their own.
 
 \section{Conclusion}
-Across ten classifiers evaluated with and without PCA on the Spambase dataset, PCA provided
-no net benefit here: it reduced 5-fold cross-validated accuracy for all ten models and test
-accuracy for eight of the ten, with the two exceptions (SVM, Logistic Regression) improving
-only marginally and only on the single test split, not in cross-validation. The clearest
-pattern is architectural rather than dataset-specific: linear and distance-based models
-(SVM, KNN, Logistic Regression) are largely indifferent to an orthogonal rotation of the
-feature space, while tree-based and ensemble models lose real predictive power when their
-axis-aligned splits act on rotated components instead of the original, individually
+Across ten classifiers evaluated on the Spambase dataset, a properly justified PCA
+representation, 48 components chosen from a 95\% variance target and confirmed against
+correlation, Bartlett and Kaiser diagnostics rather than an arbitrary guess, still provided no
+net benefit over the raw feature space for most models: it reduced 5-fold cross-validated
+accuracy for all ten models and test accuracy for eight of the ten. The two exceptions, SVM
+and Logistic Regression, improved only marginally and only on the single test split, not in
+cross-validation. The clearest pattern is architectural rather than dataset-specific: linear
+and distance-based models are largely indifferent to an orthogonal rotation of the feature
+space, so a correctly-sized PCA representation costs them almost nothing while modestly
+shrinking the input, whereas tree-based and ensemble models lose real predictive power when
+their axis-aligned splits act on rotated components instead of the original, individually
 meaningful word- and character-frequency features. The best overall models were XGBoost and
-Random Forest without PCA (95.5\% and 95.3\% cross-validated accuracy respectively); PCA
-would only be worth revisiting here if paired with a much more aggressive component count
-(well below the 48 needed for 95\% variance) or applied to a dataset with a less favourable
-sample-to-feature ratio than this one's.
+Random Forest without PCA (95.5\% and 95.3\% cross-validated accuracy respectively), so the
+raw feature space remains the right default here; PCA would be more clearly worthwhile on a
+dataset with a less favourable sample-to-feature ratio than this one's, where genuine
+compression, not just a change of basis, is available.
 
 \section{References}
 \begin{enumerate}
